@@ -146,10 +146,10 @@ export default function TestPage() {
         <div className="flex items-center space-x-2">
           <TwoStageProgress />
         </div>
-        <div className="flex flex-col md:flex-row gap-2 justify-between">
+        <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
           <ImageCard
             title="LIVE1"
-            description="설명"
+            description=""
             imageUrl="https://i.ytimg.com/vi/Ofq11cvq_v4/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAN_12GxI_quJqD45fRKLsnLEvfqA"
             imageAlt="이미지"
             buttonText="버튼"

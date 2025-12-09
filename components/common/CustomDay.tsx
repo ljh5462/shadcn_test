@@ -8,14 +8,16 @@ interface CustomDayProps extends DayProps {
 }
 
 export function CustomDay(props: CustomDayProps) {
-  const { day, eventDates = [], onDaySelect } = props
+  const { day, eventDates = ['2025-12-08'], onDaySelect } = props
 
   const date = day.date.getDay()
   const isSat = date === 6
   const isSun = date === 0
 
-  const dateString = format(date, 'yyyy-MM-dd')
+  const dateString = format(day.date, 'yyyy-MM-dd')
   const hasEvent = eventDates.includes(dateString)
+
+  const handleDayClick = () => {}
 
   return (
     <td
@@ -27,7 +29,7 @@ export function CustomDay(props: CustomDayProps) {
         ${isSun ? 'text-red-500' : ''}
       `}>
       {/* 날짜 숫자 */}
-      <button>
+      <button onClick={handleDayClick}>
         <span className="relative">
           {props.children}
 

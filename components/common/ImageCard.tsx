@@ -93,22 +93,8 @@ const ImageCard: React.FC<ImageCardProps> = ({
       </CardContent>
 
       {/* 5. 푸터/액션 영역 */}
-      <CardFooter>
+      <CardFooter className="justify-end">
         <div className="flex flex-row flex-wrap items-center gap-12">
-          <Avatar>
-            <AvatarImage
-              src="https://github.com/shadcn.png"
-              alt="@shadcn"
-            />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <Avatar className="rounded-lg">
-            <AvatarImage
-              src="https://github.com/evilrabbit.png"
-              alt="@evilrabbit"
-            />
-            <AvatarFallback>ER</AvatarFallback>
-          </Avatar>
           <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
             <Avatar>
               <AvatarImage
