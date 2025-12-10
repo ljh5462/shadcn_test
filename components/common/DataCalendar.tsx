@@ -64,41 +64,56 @@ const createCustomDay = (
       onDaySelect(day.date)
     }
 
+    const getTypeBadgeClass = (type: string) => {
+      switch (type) {
+        case 'LIVE':
+          return 'bg-red-600 hover:bg-red-700 text-white' // 붉은 배경
+        case 'SHORTS':
+          return 'bg-purple-600 hover:bg-purple-700 text-white' // 숏츠는 보라색 (선택 사항)
+        case 'VIDEO':
+        default:
+          return 'bg-gray-800 hover:bg-gray-700 text-white' // 일반 영상은 어두운 회색
+      }
+    }
+
     return (
       <td
         {...props}
         onClick={handleDayClick}
         className={`
-        flex items-center justify-center w-full h-full p-1
+        flex items-center justify-center w-full h-full md:w-20 md:h-20
         rounded-md cursor-pointer
         ${isSat ? 'text-blue-500' : ''}
         ${isSun ? 'text-red-500' : ''}
         ${!isThisMonth ? 'opacity-30' : ''}
-        ${isSelected ? 'bg-accent text-accent-foreground hover:bg-accent/80' : ''}
+        ${isSelected ? 'bg-pink-100 text-accent-foreground hover:bg-accent/80 border-2 border-pink-500' : ''}
         
       `}>
         {/* 날짜 숫자 */}
         <button
           className={`
-        cursor-pointer p-3
+        cursor-pointer p-4 md:p-1 md:w-18 md:h-18 flex flex-col justify-start
         ${isEventDay && viewMode ? 'bg-pink-300 rounded-sm text-white' : isEventDay && !viewMode ? 'bg-blue-400 rounded-sm text-white' : ''}
           `}>
-          <span className="relative">
+          <span className="relative text-sm">
             {props.children}
 
             {/* 날짜에 데이터가 있을 때 dot 표시 */}
           </span>
           <div className="h-3 text-xs flex flex-col gap-1">
             {eventList.length > 0 && viewMode ? (
-              <>
-                {/* {eventList.map((e, i) => (
-                  <span
+              <div className="flex flex-col gap-0.5 opacity-80">
+                {eventList.map((e, i) => (
+                  <div
                     key={i}
-                    className="absolute left-1/2 -translate-x-1/2 w-1 h-1 bg-red-500 rounded-full">
+                    className={`
+                      rounded-md text-[10px]
+                      ${getTypeBadgeClass(e.type)}
+                    `}>
                     {e.time}
-                  </span>
-                ))} */}
-              </>
+                  </div>
+                ))}
+              </div>
             ) : (
               // <span className="absolute bottom-[-4px] left-1/2 -translate-x-1/2 w-1 h-1 bg-red-500 rounded-full"></span>
               <></>
@@ -117,7 +132,8 @@ const samplaData = [
   { date: '2025-12-10', type: 'LIVE', time: '21:00' },
   { date: '2025-12-11', type: 'LIVE', time: '19:00' },
   { date: '2025-12-11', type: 'VIDEO', time: '20:00' },
-  { date: '2025-12-12', type: 'SHORT', time: '18:00' },
+  { date: '2025-12-11', type: 'LIVE', time: '21:00' },
+  { date: '2025-12-12', type: 'SHORTS', time: '18:00' },
   { date: '2025-12-12', type: 'LIVE', time: '22:00' }
 ]
 
