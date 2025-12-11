@@ -7,12 +7,14 @@ import { DayProps } from 'react-day-picker'
 import { format } from 'date-fns'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import { Badge } from '../ui/badge'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
+import { Dialog, DialogContent, DialogTitle } from '../ui/dialog'
 
 interface VideoDates {
   date: string
   time: string
   type: string
+  title: string
 }
 
 interface MemberDates {
@@ -86,14 +88,14 @@ const createCustomDay = (
         ${isSat ? 'text-blue-500' : ''}
         ${isSun ? 'text-red-500' : ''}
         ${!isThisMonth ? 'opacity-30' : ''}
-        ${isSelected ? 'bg-pink-100 text-accent-foreground hover:bg-accent/80 border-2 border-pink-500' : ''}
+        ${isSelected ? 'text-accent-foreground hover:bg-pink-100 border-2 border-pink-400' : ''}
         
       `}>
         {/* 날짜 숫자 */}
         <button
           className={`
         cursor-pointer p-4 md:p-1 md:w-18 md:h-18 flex flex-col justify-start
-        ${isEventDay && viewMode ? 'bg-pink-300 rounded-sm text-white' : isEventDay && !viewMode ? 'bg-blue-400 rounded-sm text-white' : ''}
+        ${isEventDay && viewMode ? 'bg-pink-200 rounded-sm text-white' : isEventDay && !viewMode ? 'bg-blue-400 rounded-sm text-white' : ''}
           `}>
           <span className="relative text-sm">
             {props.children}
@@ -104,14 +106,21 @@ const createCustomDay = (
             {eventList.length > 0 && viewMode ? (
               <div className="flex flex-col gap-0.5 opacity-80">
                 {eventList.map((e, i) => (
-                  <div
-                    key={i}
-                    className={`
-                      rounded-md text-[10px]
-                      ${getTypeBadgeClass(e.type)}
-                    `}>
-                    {e.time}
-                  </div>
+                  <Tooltip key={i}>
+                    <TooltipTrigger asChild>
+                      <div
+                        key={i}
+                        className={`
+                        rounded-md text-[10px]
+                        ${getTypeBadgeClass(e.type)}
+                      `}>
+                        {e.time}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {e.time} - {e.title}
+                    </TooltipContent>
+                  </Tooltip>
                 ))}
               </div>
             ) : (
@@ -129,12 +138,12 @@ const createCustomDay = (
 }
 
 const samplaData = [
-  { date: '2025-12-10', type: 'LIVE', time: '21:00' },
-  { date: '2025-12-11', type: 'LIVE', time: '19:00' },
-  { date: '2025-12-11', type: 'VIDEO', time: '20:00' },
-  { date: '2025-12-11', type: 'LIVE', time: '21:00' },
-  { date: '2025-12-12', type: 'SHORTS', time: '18:00' },
-  { date: '2025-12-12', type: 'LIVE', time: '22:00' }
+  { date: '2025-12-10', type: 'LIVE', time: '21:00', title: '123123' },
+  { date: '2025-12-11', type: 'LIVE', time: '19:00', title: 'afdfsd' },
+  { date: '2025-12-11', type: 'VIDEO', time: '20:00', title: 'bfgn' },
+  { date: '2025-12-11', type: 'LIVE', time: '21:00', title: 'sdnbng' },
+  { date: '2025-12-12', type: 'SHORTS', time: '18:00', title: 'sdfsdv' },
+  { date: '2025-12-12', type: 'LIVE', time: '22:00', title: 'ngghfgn' }
 ]
 
 const sampleData2 = [
@@ -150,12 +159,14 @@ export default function CustomCalendar() {
   const [eventDates, setEventDates] = useState<VideoDates[]>(samplaData)
   const [eventDate2, setEventDate2] = useState<MemberDates[]>(sampleData2)
   const [viewMode, setViewMode] = useState<boolean>(true)
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(true)
 
   const handleDaySelection = (date: Date) => {
     if (date.getMonth() !== month.getMonth()) {
       setMonth(date)
     }
     setSelected(date)
+    setIsDialogOpen(true)
   }
 
   const handleMonthChange = (date: Date) => {
@@ -165,6 +176,13 @@ export default function CustomCalendar() {
 
   const handleModeChange = () => {
     setViewMode(!viewMode)
+  }
+
+  const handleDialogClose = (open: boolean) => {
+    // Dialog가 닫힐 때 상태를 null로 초기화합니다.
+    if (!open) {
+      setIsDialogOpen(!isDialogOpen)
+    }
   }
 
   const DayWithCustomProps = createCustomDay(
@@ -201,6 +219,17 @@ export default function CustomCalendar() {
           cell: 'aspect-square p-0' // 정사각형 셀이 됨
         }}
       />
+
+      <Dialog
+        // [핵심] selectedDate가 null이 아닐 때만 Dialog가 열림
+        open={isDialogOpen}
+        onOpenChange={handleDialogClose} // 닫기 버튼이나 배경 클릭 시 호출
+      >
+        <DialogContent>
+          <DialogTitle>TITLE</DialogTitle>
+          <p>이것은 CustomDay의 onClick 이벤트로 열린 모달입니다.</p>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
