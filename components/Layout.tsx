@@ -26,6 +26,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         테스트
       </Link>
       <Link
+        href="/schedule"
+        className="px-4 py-2 hover:bg-gray-100 rounded-md">
+        스케줄
+      </Link>
+      <Link
         href="/settings"
         className="px-4 py-2 hover:bg-gray-100 rounded-md">
         설정

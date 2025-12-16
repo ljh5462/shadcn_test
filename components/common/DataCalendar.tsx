@@ -9,6 +9,7 @@ import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 import { Dialog, DialogContent, DialogTitle } from '../ui/dialog'
+import CalendarMonthPicker from './CalendarMonthPicker'
 
 interface VideoDates {
   date: string
@@ -83,28 +84,28 @@ const createCustomDay = (
         {...props}
         onClick={handleDayClick}
         className={`
-        flex items-center justify-center w-full h-full md:w-20 md:h-20
-        rounded-md cursor-pointer
+        flex items-center justify-center w-[50px] h-full md:w-20 md:h-20
+        rounded-md cursor-pointer box-border border-2 
         ${isSat ? 'text-blue-500' : ''}
         ${isSun ? 'text-red-500' : ''}
         ${!isThisMonth ? 'opacity-30' : ''}
-        ${isSelected ? 'text-accent-foreground hover:bg-pink-100 border-2 border-pink-400' : ''}
+        ${isSelected ? 'text-accent-foreground hover:bg-pink-100 border-pink-400' : 'border-transparent'}
         
       `}>
         {/* 날짜 숫자 */}
         <button
           className={`
-        cursor-pointer p-4 md:p-1 md:w-18 md:h-18 flex flex-col justify-start
+        cursor-pointer m-0.5 p-3.5 md:p-1 w-11/12 h-11/12 md:w-18 md:h-18 flex flex-col justify-start
         ${isEventDay && viewMode ? 'bg-pink-200 rounded-sm text-white' : isEventDay && !viewMode ? 'bg-blue-400 rounded-sm text-white' : ''}
           `}>
           <span className="relative text-sm">
             {props.children}
 
-            {/* 날짜에 데이터가 있을 때 dot 표시 */}
+            {/* 날짜에 데이터가 있을 때 표시 */}
           </span>
           <div className="h-3 text-xs flex flex-col gap-1">
             {eventList.length > 0 && viewMode ? (
-              <div className="flex flex-col gap-0.5 opacity-80">
+              <div className="flex-col gap-0.5 opacity-80 hidden md:flex">
                 {eventList.map((e, i) => (
                   <Tooltip key={i}>
                     <TooltipTrigger asChild>
@@ -159,14 +160,23 @@ export default function CustomCalendar() {
   const [eventDates, setEventDates] = useState<VideoDates[]>(samplaData)
   const [eventDate2, setEventDate2] = useState<MemberDates[]>(sampleData2)
   const [viewMode, setViewMode] = useState<boolean>(true)
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(true)
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
+  const [dialogTitle, setDialogTitle] = useState<string>('')
+  const [dialogEvents, setDialogEvents] = useState<VideoDates[]>([])
 
   const handleDaySelection = (date: Date) => {
+    setSelected(date)
     if (date.getMonth() !== month.getMonth()) {
       setMonth(date)
+      return
     }
-    setSelected(date)
-    setIsDialogOpen(true)
+    const dateString = format(date, 'yyyy-MM-dd')
+    const events = eventDates.filter(e => e.date === dateString)
+    if (events.length > 0) {
+      setIsDialogOpen(true)
+      setDialogTitle(dateString)
+      setDialogEvents(events)
+    }
   }
 
   const handleMonthChange = (date: Date) => {
@@ -196,13 +206,19 @@ export default function CustomCalendar() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center space-x-2">
-        <Switch
-          id="airplane-mode"
-          checked={viewMode}
-          onClick={handleModeChange}
+      <div className="flex justify-between items-center space-x-2">
+        <CalendarMonthPicker
+          month={month}
+          monthChange={handleMonthChange}
         />
-        <Label htmlFor="airplane-mode">Event Mode</Label>
+        <div className="flex gap-4">
+          <Switch
+            id="airplane-mode"
+            checked={viewMode}
+            onClick={handleModeChange}
+          />
+          <Label htmlFor="airplane-mode">Event Mode</Label>
+        </div>
       </div>
       <Calendar
         components={{ Day: DayWithCustomProps }}
@@ -211,6 +227,8 @@ export default function CustomCalendar() {
         month={month}
         onMonthChange={handleMonthChange}
         fixedWeeks={true}
+        //captionLayout="dropdown"
+        fromYear={2018}
         className="w-full max-w-[400px] md:max-w-[600px] rounded-xl border shadow-2xl"
         classNames={{
           table: 'w-full h-full',
@@ -226,8 +244,12 @@ export default function CustomCalendar() {
         onOpenChange={handleDialogClose} // 닫기 버튼이나 배경 클릭 시 호출
       >
         <DialogContent>
-          <DialogTitle>TITLE</DialogTitle>
-          <p>이것은 CustomDay의 onClick 이벤트로 열린 모달입니다.</p>
+          <DialogTitle>{dialogTitle}</DialogTitle>
+          {dialogEvents.map((e, idx) => (
+            <div key={idx}>
+              {e.time} - {e.type} : {e.title}
+            </div>
+          ))}
         </DialogContent>
       </Dialog>
     </div>
