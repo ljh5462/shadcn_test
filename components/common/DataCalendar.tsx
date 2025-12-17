@@ -84,18 +84,18 @@ const createCustomDay = (
         {...props}
         onClick={handleDayClick}
         className={`
-        flex items-center justify-center w-[50px] h-full md:w-20 md:h-20
-        rounded-md cursor-pointer box-border border-2 
+        flex items-center justify-center w-[50px] h-full md:w-18 md:h-20
+        rounded-md cursor-pointer box-border border-2 hover:bg-pink-100 md:m-0.5
         ${isSat ? 'text-blue-500' : ''}
         ${isSun ? 'text-red-500' : ''}
         ${!isThisMonth ? 'opacity-30' : ''}
-        ${isSelected ? 'text-accent-foreground hover:bg-pink-100 border-pink-400' : 'border-transparent'}
+        ${isSelected ? 'text-accent-foreground  border-pink-400' : 'border-transparent'}
         
       `}>
         {/* 날짜 숫자 */}
         <button
           className={`
-        cursor-pointer m-0.5 p-3.5 md:p-1 w-11/12 h-11/12 md:w-18 md:h-18 flex flex-col justify-start
+        cursor-pointer m-0.5 pt-1 pb-3.5 md:p-1 w-11/12 h-11/12 md:w-16 md:h-18 flex flex-col justify-start
         ${isEventDay && viewMode ? 'bg-pink-200 rounded-sm text-white' : isEventDay && !viewMode ? 'bg-blue-400 rounded-sm text-white' : ''}
           `}>
           <span className="relative text-sm">
@@ -103,27 +103,39 @@ const createCustomDay = (
 
             {/* 날짜에 데이터가 있을 때 표시 */}
           </span>
-          <div className="h-3 text-xs flex flex-col gap-1">
+          <div className="h-3 text-xs flex flex-col gap-1 mt-1">
             {eventList.length > 0 && viewMode ? (
-              <div className="flex-col gap-0.5 opacity-80 hidden md:flex">
-                {eventList.map((e, i) => (
-                  <Tooltip key={i}>
-                    <TooltipTrigger asChild>
-                      <div
-                        key={i}
-                        className={`
-                        rounded-md text-[10px]
-                        ${getTypeBadgeClass(e.type)}
-                      `}>
-                        {e.time}
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      {e.time} - {e.title}
-                    </TooltipContent>
-                  </Tooltip>
-                ))}
-              </div>
+              <>
+                <div className="flex-col gap-0.5 opacity-80 hidden md:flex">
+                  {eventList.map((e, i) => (
+                    <Tooltip key={i}>
+                      <TooltipTrigger asChild>
+                        <div
+                          key={i}
+                          className={`
+                          rounded-md text-[9px]
+                          ${getTypeBadgeClass(e.type)}
+                        `}>
+                          {e.time}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {e.time} - {e.title}
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
+                </div>
+                <div className="flex-col gap-1 opacity-80 flex md:hidden items-center">
+                  {eventList.map((e, i) => (
+                    <div
+                      key={i}
+                      className={`
+                          rounded-md w-4/5 h-1
+                          ${getTypeBadgeClass(e.type)}
+                        `}></div>
+                  ))}
+                </div>
+              </>
             ) : (
               // <span className="absolute bottom-[-4px] left-1/2 -translate-x-1/2 w-1 h-1 bg-red-500 rounded-full"></span>
               <></>

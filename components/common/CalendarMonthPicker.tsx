@@ -35,6 +35,8 @@ export default function CalendarMonthPicker(props: Props) {
         <MonthPicker
           onMonthSelect={handleMonthChange}
           selectedMonth={month}
+          minDate={new Date('2018-08-01')}
+          maxDate={new Date('2030-12-31')}
         />
       </PopoverContent>
     </Popover>
