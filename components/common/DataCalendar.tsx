@@ -10,6 +10,9 @@ import { Label } from '@/components/ui/label'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 import { Dialog, DialogContent, DialogTitle } from '../ui/dialog'
 import CalendarMonthPicker from './CalendarMonthPicker'
+import { Badge } from '../ui/badge'
+import { Avatar, AvatarImage } from '../ui/avatar'
+import { useSwipeable } from 'react-swipeable'
 
 interface VideoDates {
   date: string
@@ -21,6 +24,7 @@ interface VideoDates {
 interface MemberDates {
   date: string
   img: string
+  type: string
 }
 
 interface CustomDayProps extends DayProps {
@@ -96,7 +100,7 @@ const createCustomDay = (
         <button
           className={`
         cursor-pointer m-0.5 pt-1 pb-3.5 md:p-1 w-11/12 h-11/12 md:w-16 md:h-18 flex flex-col justify-start
-        ${isEventDay && viewMode ? 'bg-pink-200 rounded-sm text-white' : isEventDay && !viewMode ? 'bg-blue-400 rounded-sm text-white' : ''}
+        ${isEventDay && viewMode ? 'bg-pink-200 rounded-sm text-white' : isEventDay && !viewMode ? 'bg-blue-300 rounded-sm text-white' : ''}
           `}>
           <span className="relative text-sm">
             {props.children}
@@ -104,7 +108,7 @@ const createCustomDay = (
             {/* 날짜에 데이터가 있을 때 표시 */}
           </span>
           <div className="h-3 text-xs flex flex-col gap-1 mt-1">
-            {eventList.length > 0 && viewMode ? (
+            {eventList.length > 0 && viewMode && (
               <>
                 <div className="flex-col gap-0.5 opacity-80 hidden md:flex">
                   {eventList.map((e, i) => (
@@ -136,11 +140,32 @@ const createCustomDay = (
                   ))}
                 </div>
               </>
-            ) : (
-              // <span className="absolute bottom-[-4px] left-1/2 -translate-x-1/2 w-1 h-1 bg-red-500 rounded-full"></span>
-              <></>
             )}
-            {/* <Badge className="hidden md:block">21:00</Badge> */}
+            {eventList2.length > 0 && !viewMode && (
+              <>
+                <div className="gap-0.5 hidden md:flex">
+                  {eventList2.map((e, i) => (
+                    <Avatar
+                      key={i}
+                      className="w-6 h-6">
+                      <AvatarImage
+                        src="https://github.com/shadcn.png"
+                        alt="@shadcn"
+                      />
+                    </Avatar>
+                  ))}
+                </div>
+                <div className="flex-col gap-1 opacity-80 flex md:hidden items-center">
+                  {eventList2.map((e, i) => (
+                    <div
+                      key={i}
+                      className={`
+                          rounded-md w-4/5 h-1
+                        `}></div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </button>
       </td>
@@ -162,7 +187,18 @@ const samplaData = [
 const sampleData2 = [
   {
     date: '12-12',
-    img: 'https://i.ytimg.com/vi/hsHO39PnC1s/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBMpkC-TzdOe7xFOwWJ7MzeEYfNRA'
+    img: 'https://i.ytimg.com/vi/hsHO39PnC1s/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBMpkC-TzdOe7xFOwWJ7MzeEYfNRA',
+    type: 'A'
+  },
+  {
+    date: '12-12',
+    img: 'https://i.ytimg.com/vi/hsHO39PnC1s/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBMpkC-TzdOe7xFOwWJ7MzeEYfNRA',
+    type: 'B'
+  },
+  {
+    date: '12-14',
+    img: 'https://i.ytimg.com/vi/hsHO39PnC1s/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBMpkC-TzdOe7xFOwWJ7MzeEYfNRA',
+    type: 'A'
   }
 ]
 
@@ -174,9 +210,12 @@ export default function CustomCalendar() {
   const [viewMode, setViewMode] = useState<boolean>(true)
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
   const [dialogTitle, setDialogTitle] = useState<string>('')
-  const [dialogEvents, setDialogEvents] = useState<VideoDates[]>([])
+  const [dialogEvents, setDialogEvents] = useState<
+    VideoDates[] | MemberDates[]
+  >([])
 
   const handleDaySelection = (date: Date) => {
+    setDialogEvents([])
     setSelected(date)
     if (date.getMonth() !== month.getMonth()) {
       setMonth(date)
@@ -184,11 +223,17 @@ export default function CustomCalendar() {
     }
     const dateString = format(date, 'yyyy-MM-dd')
     const events = eventDates.filter(e => e.date === dateString)
-    if (events.length > 0) {
-      setIsDialogOpen(true)
-      setDialogTitle(dateString)
+    const events2 = eventDate2.filter(e => e.date === dateString.substring(5))
+    if (viewMode && events.length > 0) {
       setDialogEvents(events)
     }
+    if (!viewMode && events2.length > 0) {
+      setDialogEvents(events2)
+    }
+    console.log(events)
+    console.log(events2)
+    setIsDialogOpen(true)
+    setDialogTitle(dateString)
   }
 
   const handleMonthChange = (date: Date) => {
@@ -207,6 +252,51 @@ export default function CustomCalendar() {
     }
   }
 
+  const monthSwipeHandler = useSwipeable({
+    onSwipedLeft: () => handleSwipeChange('left'),
+    onSwipedRight: () => handleSwipeChange('right')
+  })
+
+  const handleSwipeChange = (position: string) => {
+    const today = new Date()
+    const ym = format(today, 'yyyyMM')
+    // 오른쪽 -> 왼쪽 (+)
+    if (position === 'left') {
+      const nextMonth = new Date(selected)
+      nextMonth.setMonth(nextMonth.getMonth() + 1)
+      nextMonth.setDate(1)
+      if (format(nextMonth, 'yyyyMM') === ym) {
+        setSelected(today)
+      } else {
+        setSelected(nextMonth)
+      }
+      setMonth(nextMonth)
+      // 왼쪽 -> 오른쪽 (-)
+    } else if (position === 'right') {
+      const prevMonth = new Date(selected)
+      prevMonth.setMonth(prevMonth.getMonth() - 1)
+      prevMonth.setDate(1)
+      if (format(prevMonth, 'yyyyMM') === ym) {
+        setSelected(today)
+      } else {
+        setSelected(prevMonth)
+      }
+      setMonth(prevMonth)
+    }
+  }
+
+  const getTypeBadgeClass = (type: string) => {
+    switch (type) {
+      case 'LIVE':
+        return 'bg-red-600 hover:bg-red-700 text-white' // 붉은 배경
+      case 'SHORTS':
+        return 'bg-purple-600 hover:bg-purple-700 text-white' // 숏츠는 보라색 (선택 사항)
+      case 'VIDEO':
+      default:
+        return 'bg-gray-800 hover:bg-gray-700 text-white' // 일반 영상은 어두운 회색
+    }
+  }
+
   const DayWithCustomProps = createCustomDay(
     selected,
     month,
@@ -217,7 +307,9 @@ export default function CustomCalendar() {
   )
 
   return (
-    <div className="flex flex-col gap-4">
+    <div
+      className="flex flex-col gap-4"
+      {...monthSwipeHandler}>
       <div className="flex justify-between items-center space-x-2">
         <CalendarMonthPicker
           month={month}
@@ -256,12 +348,30 @@ export default function CustomCalendar() {
         onOpenChange={handleDialogClose} // 닫기 버튼이나 배경 클릭 시 호출
       >
         <DialogContent>
-          <DialogTitle>{dialogTitle}</DialogTitle>
-          {dialogEvents.map((e, idx) => (
-            <div key={idx}>
-              {e.time} - {e.type} : {e.title}
-            </div>
-          ))}
+          <DialogTitle className="flex justify-center">
+            {dialogTitle}
+          </DialogTitle>
+          {dialogEvents.map((e, idx) => {
+            if ('time' in e) {
+              return (
+                <div
+                  key={idx}
+                  className="flex gap-2">
+                  <Badge className={`w-12 ${getTypeBadgeClass(e.type)}`}>
+                    {e.time}
+                  </Badge>{' '}
+                  {e.title}
+                </div>
+              )
+            }
+            return (
+              <div
+                key={idx}
+                className="flex gap-2">
+                {e.type}
+              </div>
+            )
+          })}
         </DialogContent>
       </Dialog>
     </div>
