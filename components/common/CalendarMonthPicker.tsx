@@ -24,7 +24,7 @@ export default function CalendarMonthPicker(props: Props) {
         <Button
           variant={'outline'}
           className={cn(
-            'w-[200px] justify-start text-left font-normal',
+            'w-[180px] justify-start text-left font-normal',
             !month && 'text-muted-foreground'
           )}>
           <CalendarIcon className="mr-2 h-4 w-4" />

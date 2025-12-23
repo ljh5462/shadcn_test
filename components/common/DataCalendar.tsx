@@ -13,6 +13,7 @@ import CalendarMonthPicker from './CalendarMonthPicker'
 import { Badge } from '../ui/badge'
 import { Avatar, AvatarImage } from '../ui/avatar'
 import { useSwipeable } from 'react-swipeable'
+import Image from 'next/image'
 
 interface VideoDates {
   date: string
@@ -88,19 +89,19 @@ const createCustomDay = (
         {...props}
         onClick={handleDayClick}
         className={`
-        flex items-center justify-center w-[50px] h-full md:w-18 md:h-20
-        rounded-md cursor-pointer box-border border-2 hover:bg-pink-100 md:m-0.5
+        flex items-center justify-center w-[50px] h-full md:w-20 md:h-22
+        rounded-md cursor-pointer box-border border-2 md:m-0.5
         ${isSat ? 'text-blue-500' : ''}
         ${isSun ? 'text-red-500' : ''}
         ${!isThisMonth ? 'opacity-30' : ''}
-        ${isSelected ? 'text-accent-foreground  border-pink-400' : 'border-transparent'}
-        
+        ${isSelected ? (viewMode ? 'border-pink-400 text-accent-foreground' : 'border-blue-400 text-accent-foreground ') : 'border-transparent'}
+        ${viewMode ? 'hover:bg-pink-100' : 'hover:bg-blue-100'}
       `}>
         {/* 날짜 숫자 */}
         <button
           className={`
-        cursor-pointer m-0.5 pt-1 pb-3.5 md:p-1 w-11/12 h-11/12 md:w-16 md:h-18 flex flex-col justify-start
-        ${isEventDay && viewMode ? 'bg-pink-200 rounded-sm text-white' : isEventDay && !viewMode ? 'bg-blue-300 rounded-sm text-white' : ''}
+        cursor-pointer m-0.5 pt-1 pb-3.5 md:p-1 w-11/12 h-11/12 md:w-18 md:h-20 flex flex-col justify-start
+        ${isEventDay ? (viewMode ? 'bg-pink-300 rounded-sm text-white' : 'bg-blue-300 rounded-sm text-white') : ''}
           `}>
           <span className="relative text-sm">
             {props.children}
@@ -117,7 +118,7 @@ const createCustomDay = (
                         <div
                           key={i}
                           className={`
-                          rounded-md text-[9px]
+                          rounded-md text-[10px] font-bold
                           ${getTypeBadgeClass(e.type)}
                         `}>
                           {e.time}
@@ -143,11 +144,11 @@ const createCustomDay = (
             )}
             {eventList2.length > 0 && !viewMode && (
               <>
-                <div className="gap-0.5 hidden md:flex">
+                <div className="flex justify-evenly flex-wrap">
                   {eventList2.map((e, i) => (
                     <Avatar
                       key={i}
-                      className="w-6 h-6">
+                      className="w-4 h-4 md:w-5 md:h-5">
                       <AvatarImage
                         src="https://github.com/shadcn.png"
                         alt="@shadcn"
@@ -155,7 +156,7 @@ const createCustomDay = (
                     </Avatar>
                   ))}
                 </div>
-                <div className="flex-col gap-1 opacity-80 flex md:hidden items-center">
+                {/* <div className="flex-col gap-1 opacity-80 flex md:hidden items-center">
                   {eventList2.map((e, i) => (
                     <div
                       key={i}
@@ -163,7 +164,7 @@ const createCustomDay = (
                           rounded-md w-4/5 h-1
                         `}></div>
                   ))}
-                </div>
+                </div> */}
               </>
             )}
           </div>
@@ -176,12 +177,47 @@ const createCustomDay = (
 }
 
 const samplaData = [
-  { date: '2025-12-10', type: 'LIVE', time: '21:00', title: '123123' },
-  { date: '2025-12-11', type: 'LIVE', time: '19:00', title: 'afdfsd' },
-  { date: '2025-12-11', type: 'VIDEO', time: '20:00', title: 'bfgn' },
-  { date: '2025-12-11', type: 'LIVE', time: '21:00', title: 'sdnbng' },
-  { date: '2025-12-12', type: 'SHORTS', time: '18:00', title: 'sdfsdv' },
-  { date: '2025-12-12', type: 'LIVE', time: '22:00', title: 'ngghfgn' }
+  {
+    date: '2025-12-10',
+    type: 'LIVE',
+    time: '21:00',
+    title:
+      'Playlist | 듣기만 해도 설레는, 크리스마스 재즈🎅 | Christmas Jazz Playlist'
+  },
+  {
+    date: '2025-12-11',
+    type: 'LIVE',
+    time: '19:00',
+    title:
+      '𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 | 오늘 같이 일하기 싫은 날 듣기 좋은🎧뉴욕 가을갬성 폭발 플리🍂🗽카페음악'
+  },
+  {
+    date: '2026-12-11',
+    type: 'VIDEO',
+    time: '20:00',
+    title:
+      '🔥 벽난로의 따스한 불꽃: 포근한 장작 소리와 부드러운 빛, 휴식과 숙면을 위한 힐링'
+  },
+  {
+    date: '2025-12-11',
+    type: 'LIVE',
+    time: '21:00',
+    title:
+      '고양이를 위한 음악 😽 좋은 수면 음악과 스트레스 해소 고양이를 위한 음악'
+  },
+  {
+    date: '2026-01-01',
+    type: 'SHORTS',
+    time: '18:00',
+    title:
+      'Lightroom의 생성형 제거를 사용하면 파티 후 사진 정리가 정말 쉬워집니다.'
+  },
+  {
+    date: '2026-01-01',
+    type: 'LIVE',
+    time: '22:00',
+    title: 'How Differential Gear works (BEST Tutorial)'
+  }
 ]
 
 const sampleData2 = [
@@ -192,6 +228,16 @@ const sampleData2 = [
   },
   {
     date: '12-12',
+    img: 'https://i.ytimg.com/vi/hsHO39PnC1s/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBMpkC-TzdOe7xFOwWJ7MzeEYfNRA',
+    type: 'B'
+  },
+  {
+    date: '01-01',
+    img: 'https://i.ytimg.com/vi/hsHO39PnC1s/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBMpkC-TzdOe7xFOwWJ7MzeEYfNRA',
+    type: 'B'
+  },
+  {
+    date: '01-01',
     img: 'https://i.ytimg.com/vi/hsHO39PnC1s/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBMpkC-TzdOe7xFOwWJ7MzeEYfNRA',
     type: 'B'
   },
@@ -224,16 +270,14 @@ export default function CustomCalendar() {
     const dateString = format(date, 'yyyy-MM-dd')
     const events = eventDates.filter(e => e.date === dateString)
     const events2 = eventDate2.filter(e => e.date === dateString.substring(5))
-    if (viewMode && events.length > 0) {
-      setDialogEvents(events)
+    const chkEvents = viewMode ? events.length > 0 : events2.length > 0
+    const dialogEvents = viewMode ? events : events2
+    if (chkEvents) {
+      setDialogEvents(dialogEvents)
+      setIsDialogOpen(true)
+      setDialogTitle(dateString)
+      return
     }
-    if (!viewMode && events2.length > 0) {
-      setDialogEvents(events2)
-    }
-    console.log(events)
-    console.log(events2)
-    setIsDialogOpen(true)
-    setDialogTitle(dateString)
   }
 
   const handleMonthChange = (date: Date) => {
@@ -315,13 +359,23 @@ export default function CustomCalendar() {
           month={month}
           monthChange={handleMonthChange}
         />
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
+          <Label
+            htmlFor="airplane-mode"
+            className={`text-white bg-blue-300 px-1.5 py-1 rounded-sm ${!viewMode && 'duration-500 scale-[115%]'}`}>
+            Event
+          </Label>
           <Switch
+            className="cursor-pointer scale-125 data-[state=checked]:bg-pink-400 data-[state=unchecked]:bg-blue-400"
             id="airplane-mode"
             checked={viewMode}
             onClick={handleModeChange}
           />
-          <Label htmlFor="airplane-mode">Event Mode</Label>
+          <Label
+            htmlFor="airplane-mode"
+            className={`text-white bg-pink-300 px-1.5 py-1 rounded-sm ${viewMode && 'duration-500 scale-[115%]'}`}>
+            Video
+          </Label>
         </div>
       </div>
       <Calendar
@@ -333,7 +387,7 @@ export default function CustomCalendar() {
         fixedWeeks={true}
         //captionLayout="dropdown"
         fromYear={2018}
-        className="w-full max-w-[400px] md:max-w-[600px] rounded-xl border shadow-2xl"
+        className="w-full max-w-[400px] md:max-w-[720px] rounded-xl border shadow-2xl"
         classNames={{
           table: 'w-full h-full',
           head_row: 'grid grid-cols-7',
@@ -356,11 +410,25 @@ export default function CustomCalendar() {
               return (
                 <div
                   key={idx}
-                  className="flex gap-2">
-                  <Badge className={`w-12 ${getTypeBadgeClass(e.type)}`}>
-                    {e.time}
-                  </Badge>{' '}
-                  {e.title}
+                  className="flex gap-4">
+                  <Image
+                    src={
+                      'https://i.ytimg.com/vi/hsHO39PnC1s/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBMpkC-TzdOe7xFOwWJ7MzeEYfNRA'
+                    }
+                    alt={''}
+                    width={128}
+                    height={72}
+                    style={{ objectFit: 'cover' }} // 이미지가 div를 덮도록 설정
+                    className="w-32 h-[72px] transition-transform rounded-md cursor-pointer duration-500 hover:scale-105" // 호버 효과 추가
+                  />
+                  <div className="flex gap-1 flex-col">
+                    <div className="h-6">
+                      <Badge className={`w-12 ${getTypeBadgeClass(e.type)}`}>
+                        {e.time}
+                      </Badge>{' '}
+                    </div>
+                    <div className="text-xs h-full">{e.title}</div>
+                  </div>
                 </div>
               )
             }

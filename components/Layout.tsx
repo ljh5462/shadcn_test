@@ -47,7 +47,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* 데스크톱 네비게이션 */}
         <nav className="hidden md:flex items-center space-x-4">
           {NavLinks}
-          <Button variant="outline">로그인</Button>
+          {/* <Button variant="outline">로그인</Button> */}
         </nav>
 
         {/* 모바일 햄버거 메뉴 (shadcn/ui Sheet 사용) */}
@@ -67,7 +67,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               {/* 왼쪽에서 슬라이드 아웃 */}
               <nav className="flex flex-col space-y-4 pt-8">
                 {NavLinks}
-                <Button variant="outline">로그인</Button>
+                {/* <Button variant="outline">로그인</Button> */}
               </nav>
             </SheetContent>
           </Sheet>
