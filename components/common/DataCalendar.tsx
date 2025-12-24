@@ -146,25 +146,33 @@ const createCustomDay = (
               <>
                 <div className="flex justify-evenly flex-wrap">
                   {eventList2.map((e, i) => (
-                    <Avatar
-                      key={i}
-                      className="w-4 h-4 md:w-5 md:h-5">
-                      <AvatarImage
-                        src="https://github.com/shadcn.png"
-                        alt="@shadcn"
-                      />
-                    </Avatar>
+                    <Tooltip key={i}>
+                      <TooltipTrigger asChild>
+                        <Avatar
+                          key={i}
+                          className={`w-4 h-4 md:w-6 md:h-6 border-2
+                      ${e.type === 'A' ? 'border-yellow-300' : 'border-purple-400'}
+                    `}>
+                          <AvatarImage
+                            src="https://github.com/shadcn.png"
+                            alt="@shadcn"
+                          />
+                        </Avatar>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="flex justify-center items-center w-24 h-24">
+                          <Image
+                            src="https://github.com/shadcn.png"
+                            alt={''}
+                            width={60}
+                            height={60}
+                            className="rounded-full"
+                          />
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
                   ))}
                 </div>
-                {/* <div className="flex-col gap-1 opacity-80 flex md:hidden items-center">
-                  {eventList2.map((e, i) => (
-                    <div
-                      key={i}
-                      className={`
-                          rounded-md w-4/5 h-1
-                        `}></div>
-                  ))}
-                </div> */}
               </>
             )}
           </div>
@@ -281,6 +289,14 @@ export default function CustomCalendar() {
   }
 
   const handleMonthChange = (date: Date) => {
+    const today = new Date()
+    const ym = format(today, 'yyyyMM')
+    const changed = format(date, 'yyyyMM')
+    if (ym === changed) {
+      setMonth(today)
+      setSelected(today)
+      return
+    }
     setMonth(date)
     setSelected(date)
   }
@@ -362,7 +378,7 @@ export default function CustomCalendar() {
         <div className="flex gap-4 items-center">
           <Label
             htmlFor="airplane-mode"
-            className={`text-white bg-blue-300 px-1.5 py-1 rounded-sm ${!viewMode && 'duration-500 scale-[115%]'}`}>
+            className={`text-white bg-blue-300 px-1.5 py-1 rounded-sm cursor-pointer ${!viewMode && 'duration-500 scale-[115%]'}`}>
             Event
           </Label>
           <Switch
@@ -373,7 +389,7 @@ export default function CustomCalendar() {
           />
           <Label
             htmlFor="airplane-mode"
-            className={`text-white bg-pink-300 px-1.5 py-1 rounded-sm ${viewMode && 'duration-500 scale-[115%]'}`}>
+            className={`text-white bg-pink-300 px-1.5 py-1 rounded-sm cursor-pointer ${viewMode && 'duration-500 scale-[115%]'}`}>
             Video
           </Label>
         </div>
@@ -401,7 +417,7 @@ export default function CustomCalendar() {
         open={isDialogOpen}
         onOpenChange={handleDialogClose} // 닫기 버튼이나 배경 클릭 시 호출
       >
-        <DialogContent>
+        <DialogContent className="text-white bg-black/70 border-0">
           <DialogTitle className="flex justify-center">
             {dialogTitle}
           </DialogTitle>

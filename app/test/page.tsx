@@ -15,12 +15,12 @@ import { Separator } from '@/components/ui/separator' // 추가된 컴포넌트
 
 // 직접 생성한 컴포넌트 임포트
 import ServiceCardLayout from '@/components/ServiceCardLayout'
-import { Calendar } from '@/components/ui/calendar'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import ImageCard from '@/components/common/ImageCard'
 import TwoStageProgress from '@/components/common/TwoStageProgress'
 import DataCalendar from '@/components/common/DataCalendar'
+import { CustomPagination } from '@/components/common/CustomPagination'
 
 // 테스트용 데이터
 const testServiceData = [
@@ -177,7 +177,12 @@ export default function TestPage() {
         </div>
       </section>
 
-      <section className="space-y-6"></section>
+      <section className="space-y-6">
+        <h2 className="text-2xl font-bold">6. 페이지네이션</h2>
+        <div className="flex justify-center">
+          <CustomPagination />
+        </div>
+      </section>
     </div>
   )
 }
