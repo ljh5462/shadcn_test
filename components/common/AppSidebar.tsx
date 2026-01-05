@@ -21,7 +21,9 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar
+      collapsible="icon"
+      className="fixed left-0 top-0 z-50 h-screen border-r">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>

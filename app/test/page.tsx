@@ -48,7 +48,7 @@ const testServiceData = [
 
 export default function TestPage() {
   return (
-    <div className="space-y-12 w-3/4">
+    <div className="space-y-12">
       <h1 className="text-4xl font-extrabold border-b pb-4">
         🧪 통합 테스트 페이지 (App Router)
       </h1>
