@@ -89,7 +89,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
       {/* 4. 내용 영역 (옵션) */}
       <CardContent>
         {/* 추가 내용이 필요한 경우 여기에 배치 */}
-        <div className="text-xs text-gray-500"></div>
+        <div className="text-xs"></div>
       </CardContent>
 
       {/* 5. 푸터/액션 영역 */}

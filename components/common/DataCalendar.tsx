@@ -382,7 +382,7 @@ export default function CustomCalendar() {
             Event
           </Label>
           <Switch
-            className="cursor-pointer scale-125 data-[state=checked]:bg-pink-400 data-[state=unchecked]:bg-blue-400"
+            className="cursor-pointer scale-115"
             id="airplane-mode"
             checked={viewMode}
             onClick={handleModeChange}

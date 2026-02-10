@@ -27,7 +27,7 @@ export function ThemeSwitch() {
             ? 'opacity-0 translate-y-2 scale-50 -rotate-12'
             : 'opacity-100 translate-y-0 scale-100 rotate-0'
         )}>
-        <Sun className="h-3.5 w-3.5 text-yellow-200 fill-yellow-200" />
+        <Sun className="h-3.5 w-3.5 text-pink-400 fill-pink-400" />
       </div>
 
       {/* 2. 밤 아이콘: 달이 뜨는 애니메이션 (위에서 나타나며 정착) */}

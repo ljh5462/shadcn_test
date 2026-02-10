@@ -60,7 +60,7 @@ export function CustomPagination() {
   return (
     <div className="p-4 w-full space-y-4">
       {/* 데이터 출력부 */}
-      <ul className="border rounded-md p-4 bg-slate-50">
+      <ul className="border rounded-md p-4 ">
         {currentItems.map(item => (
           <li
             key={item}

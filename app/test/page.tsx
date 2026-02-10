@@ -56,11 +56,11 @@ export default function TestPage() {
       {/* --- 1. 직접 생성한 ServiceCardLayout 테스트 --- */}
       <section className="space-y-6">
         <h2 className="text-2xl font-bold">1. ServiceCardLayout 테스트</h2>
-        <p className="text-gray-600">
+        <p>
           모바일/데스크톱에서 `ServiceCardLayout`의 반응형 그리드 배치가
           정상인지 확인합니다.
         </p>
-        <div className="p-4 bg-white rounded-lg shadow-inner">
+        <div className="p-4 rounded-lg shadow-inner">
           <ServiceCardLayout items={testServiceData} />
         </div>
       </section>

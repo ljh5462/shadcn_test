@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="space-y-6 w-3/4">
       <h1 className="text-3xl font-bold">환영합니다!</h1>
-      <p className="text-gray-700">
+      <p>
         이 페이지는 shadcn/ui와 Tailwind CSS로 구현된 반응형 레이아웃 내부에
         있습니다.
       </p>
@@ -49,9 +49,7 @@ export default function Home() {
         </Card>
       </div>
 
-      <p className="text-gray-600">
-        브라우저 크기를 조절하여 반응형 동작을 확인해보세요.
-      </p>
+      <p>브라우저 크기를 조절하여 반응형 동작을 확인해보세요.</p>
     </div>
   )
 }

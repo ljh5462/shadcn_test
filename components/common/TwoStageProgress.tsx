@@ -51,7 +51,7 @@ const TwoStageProgress: React.FC = () => {
       />
 
       {/* 상태 표시 텍스트 */}
-      <p className="text-sm text-gray-600">
+      <p className="text-sm">
         {isLoading && progress < 100
           ? `처리 중... ${progress}%`
           : isDone
