@@ -21,6 +21,14 @@ import ImageCard from '@/components/common/ImageCard'
 import TwoStageProgress from '@/components/common/TwoStageProgress'
 import DataCalendar from '@/components/common/DataCalendar'
 import { CustomPagination } from '@/components/common/CustomPagination'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger
+} from '@/components/ui/sheet'
 
 // 테스트용 데이터
 const testServiceData = [
@@ -181,6 +189,23 @@ export default function TestPage() {
         <h2 className="text-2xl font-bold">6. 페이지네이션</h2>
         <div className="flex justify-center">
           <CustomPagination />
+        </div>
+      </section>
+
+      <section className="space-y-6">
+        <h2 className="text-2xl font-bold">7. 시트</h2>
+        <div className="flex justify-center">
+          <Sheet>
+            <SheetTrigger>Open</SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Are you absolutely sure?</SheetTitle>
+                <SheetDescription>
+                  This action cannot be undone.
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
         </div>
       </section>
     </div>

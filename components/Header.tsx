@@ -6,15 +6,25 @@ import { cn } from '@/lib/utils'
 import { ThemeSwitch } from './common/theme-switch'
 
 export function Header() {
-  const { toggleSidebar, open } = useSidebar()
+  const { open, setOpen, openMobile, setOpenMobile, isMobile } = useSidebar()
+
+  const handleToggleClick = () => {
+    if (isMobile) {
+      // 모바일일 때는 openMobile 상태를 반전
+      setOpenMobile(!openMobile)
+    } else {
+      // PC일 때는 기존처럼 open 상태를 반전
+      setOpen(!open)
+    }
+  }
 
   return (
-    <header className="z-100 flex h-16 w-full items-center justify-between bg-background px-6 shrink-0 border-none transition-colors duration-300">
+    <header className="z-50 flex h-16 w-full items-center justify-between bg-background px-6 shrink-0 border-none transition-colors duration-300">
       <div className="flex items-center gap-4">
         {/* 커스텀 ≡ 아이콘 버튼 */}
         {/* 🌸 커스텀 트리거 버튼 */}
         <button
-          onClick={toggleSidebar}
+          onClick={handleToggleClick}
           className={cn(
             'p-2 rounded-xl transition-all duration-300 flex items-center justify-center cursor-pointer'
           )}

@@ -19,7 +19,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* 2. 하단 영역 (사이드바 + 콘텐츠) */}
         <div className="relative flex flex-1 overflow-hidden">
           <AppSidebar />
-          <main className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-zinc-950">
+          <main className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-zinc-950 justify-center">
             {children}
           </main>
         </div>
